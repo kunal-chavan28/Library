@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>show books</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    </head>
+
+    <body style="background-color: rgb(120, 139, 146);"
+    {% csrf_token %}>  
+        <h2>Books</h2><hr>
+        <!-- {% for i in all_books %}
+           {{forloop.counter}}-- {{i.name}}--Price:- {{i.price}} <br>
+        {% endfor %}     -->
+
+        <table border="2" style="width:70%" class="table table-dark table-hover">
+            <tr>
+              <th>Book ID</th>
+              <th>Book Name</th>
+              <th>Book Qty</th>
+              <th>Book Price</th>
+              <th>Is Book Published</th>
+              <th>Published Date</th>
+              <th>Action</th>
+
+            </tr>
+            
+            {% for b in all_books%}
+            <tr>
+                <td>{{b.id}}</td>
+                <td>{{b.name}}</td>
+                <td>{{b.qty}}</td>
+                <td>{{b.price}}</td>
+                {% if b.is_published %}
+                    <td>Yes</td>
+                {% else %}    
+                    <td>No</td>
+                {% endif %}
+                {% if b.published_date %}
+                <td>{{b.published_date}}</td>
+                {% else %}
+                <td>--</td>
+                {% endif %}
+                <td>
+                    {% if book_status != "Inactive" %}
+                    <a href="{% url 'update' b.id %}" class="btn btn-primary">Edit</a>&nbsp|&nbsp
+                    <a href="{% url 'soft-delete' b.id %}" class="btn btn-secondary">Soft Delete</a>&nbsp|&nbsp
+                    <a href="{% url 'delete' b.id %}" class="btn btn-danger">Hard Delete</a>
+
+                    {% elif book_status == "Inactive" %}
+                    <a href="{% url 'restore' b.id %}" class="btn btn-primary">Restore</a>&nbsp|&nbsp
+                    <a href="{% url 'delete' b.id %}" class="btn btn-danger">Hard Delete</a>
+                    {% endif %}
+                    
+                </td>    
+            </tr>
+            {% endfor %}
+            
+          </table>        
+          
+        <a href="{% url 'home'%}" class="btn btn-primary">Home</a>   
+        <a href="{% url 'active-books'%}" class="btn btn-secondary">Show Active books</a> 
+        <a href="{% url 'inactive-books'%}" class="btn btn-danger">Show Inacctive books</a>   
+
+
+
+
+
+    </body>
+
+</html>
